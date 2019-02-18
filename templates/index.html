@@ -1,4 +1,10 @@
 {% extends "_layout.html" %}
 {% block content %}
-<h1>Homepage</h1>
+{% if first_name %}
+	<p>Thanks for contacting us, {{first_name}}</p>
+{% else %}
+	<p>Thanks for contacting us, Guest</p>
+{% endif %}
+<h1>Homepage content here</h1>
+<a href="{{ url_for('contact') }}" class="btn">Contact Us</a>
 {% endblock %}
