@@ -29,6 +29,10 @@ Start of the own declared directory
 def index():
 	return render_template('index.html')
 
+@app.route("/contact")
+def contact():
+	return render_template('contact.html')
+
 @app.route("/store", methods=['GET', 'POST'])
 def store():
 	# form = forms.Store()
@@ -44,15 +48,17 @@ def store():
 
 @app.route("/warehouse", methods=['GET', 'POST'])
 def warehouse():
+	store_list = Store.select()
 	if request.method == 'POST':
 		# How to post a success message from form submission if not using flash but using bootstrap under 'store.html' line 5
 		# breakpoint()
-		new_store = Warehouse(name=request.form['store_name'])
-		new_store.save()
-		flash("Store created", "success")
-		return redirect(url_for('store'))
+		store = Store.get_by_id(request.form['store_id'])
+		new_warehouse = Warehouse(location=request.form['warehouse_location'], store=store)
+		new_warehouse.save()
+		flash("Warehouse created", "success")
+		return redirect(url_for('warehouse'))
 	else:
-		return render_template('store.html')
+		return render_template('warehouse.html', store_list=store_list)
 
 if __name__ == '__main__':
 	app.run()
