@@ -14,6 +14,27 @@
 {% endif %}
 {% endwith %}
 
+<h1>Warehouses</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">Warehouse Store</th>
+			<th scope="col">Warehouse Location</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% if warehouse_list %}
+			{% for warehouse in warehouse_list %}
+				<tr>
+					<td>{{ warehouse.store_id }}</td>
+					<td>{{ warehouse.location }}</td>
+				</tr>
+			{% endfor %}
+		{% else %}
+		{% endif %}
+	</tbody>
+</table>
+
 <form action="{{ url_for('warehouse') }}" method="POST">
 	<div class="form-group">
 		<label for="warehouse_location">Name of warehouse:</label>
@@ -24,8 +45,7 @@
 		<select name="store_list" id="store_list">
 			<option disabled selected value> -- Select available store -- </option>
 			{% for store in store_list %}
-			{{ store_id }} = {{ store.id }}
-			<option value="{{ store_id }}">{{ store.name }} - {{ store.id }}</option>
+				<option name="store_id" value="{{ store.id }}">{{ store.name }} - {{ store.id }}</option>
 			{% endfor %}
 		</select>
 	</div>

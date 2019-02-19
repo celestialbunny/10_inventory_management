@@ -14,6 +14,26 @@
 {% endif %}
 {% endwith %}
 
+<h1>Stores</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">Store Name</th>
+			<th scope="col">Number of Warehouses</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% if store_list %}
+			{% for store in store_list %}
+				<tr>
+					<td>{{ store.name }}</td>
+				</tr>
+			{% endfor %}
+		{% else %}
+		{% endif %}
+	</tbody>
+</table>
+
 <form action="{{ url_for('store') }}" method="POST">
 	<div class="form-group">
 		<label for="store_name">Name of store:</label>

@@ -1,0 +1,15 @@
+{% extends "_layout.html" %}
+
+{% block content %}
+{% if store %}
+<h2>{{ store.name }}</h2>
+<p>Number of warehouses</p>
+	{% if warehouse_count %}
+	<p>{{ warehouse_count }}</p>
+	{% else %}
+	<p>0</p>
+	{% endif %}
+{% else %}
+<h1>Shop with specified ID does not exist</h1>
+{% endif %}
+{% endblock %}
