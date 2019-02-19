@@ -1,14 +1,20 @@
 {% extends "_layout.html" %}
 
 {% block content %}
-{% if store %}
-<h2>{{ store.name }}</h2>
-<p>Number of warehouses</p>
-	{% if warehouse_count %}
-	<p>{{ warehouse_count }}</p>
-	{% else %}
-	<p>0</p>
-	{% endif %}
+{% if store_id %}
+	{% for store in store_id %}
+	<h2>{{ store['name'] }}</h2>
+	<p>Number of warehouses</p>
+	<p>{{ num_of_wh }}</p>
+	{% endfor %}
+
+	<form action="{{ url_for('store') }}" method="POST">
+		<div class="form-group">
+			<label for="new_store_name">New store name:</label>
+			<input type="text" class="form-control" name="new_store_name" id="new_store_name" placeholder="Name of store to be updated">
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
 {% else %}
 <h1>Shop with specified ID does not exist</h1>
 {% endif %}

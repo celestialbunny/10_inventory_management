@@ -23,13 +23,15 @@
 		</tr>
 	</thead>
 	<tbody>
-		{% if store_list %}
-			{% for store in store_list %}
+		{% if payload %}
+			{% for store in payload %}
 				<tr>
-					<td>{{ store.name }}</td>
+					<td>{{ store['store_name'] }}</td>
+					<td>{{ store['num'] }}</td>
 				</tr>
 			{% endfor %}
 		{% else %}
+			<h3>No available data</h3>
 		{% endif %}
 	</tbody>
 </table>

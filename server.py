@@ -38,7 +38,14 @@ def contact():
 def store():
 	# form = forms.Store()
 	# store_list = Store.select()
-	store_list = Store.select(Store.name)
+	store_list = Store.select()
+	payload = []
+	for store in store_list:
+		new_object = {
+			"store_name": store.name,
+			"num": len(list(store.warehouses))
+		}
+		payload.append(new_object)
 	if request.method == 'POST':
 		# How to post a success message from form submission if not using flash but using bootstrap under 'store.html' line 5
 		# breakpoint()
@@ -47,26 +54,27 @@ def store():
 		flash("Store created", "success")
 		return redirect(url_for('store'), store_list)
 	else:
-		return render_template('store.html', store_list=store_list)
+		return render_template('store.html', payload=payload)
 
-@app.route("/store/<int:store_number>")
+@app.route("/store/<int:store_number>", methods=['GET', 'POST'])
 def store_info(store_number):
-	store = Store.get_by_id(store_number)
-	print(store.name)
-	warehouse_count = Warehouse.select(fn.COUNT(Warehouse.store.id == Store.id)).join(Store)
-	# Need to insert data in the Warehouse before able to proceed with the query
-	for result in warehouse_count:
-		print(result)
-	context = {'store': store, 'warehouse_count': warehouse_count}
-	return render_template('store_page.html', **context)
+	if request.method == 'POST':
+		new_store_name = request.form['new_store_name']
+		Store.update({Store.name: new_store_name}).where(Store.id == store_number)
+		return redirect(url_for('store/index'))
+	else:
+		store_id = Store.select().where(Store.id == store_number)
+		num_of_wh = True
+		for store in store_id:
+			num_of_wh = len(list(store.warehouses))
+		return render_template('store_page.html', store_id=store_id, num_of_wh=num_of_wh)
 
 @app.route("/warehouse", methods=['GET', 'POST'])
 def warehouse():
 	if request.method == 'POST':
 		store = request.form['store_list']
 		location = request.form['warehouse_location']
-		context = {'store': store, 'location': location}
-		new_warehouse = Warehouse(location=location, store=store)
+		new_warehouse = Warehouse.create(location=location, store=store)
 		new_warehouse.save()
 		flash("Warehouse created", "success")
 		return redirect(url_for('warehouse'))
